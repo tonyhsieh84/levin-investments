@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Levin's Portfolio</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏀</text></svg>">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Levin's Portfolio</h1>
+      <div class="controls">
+        <button id="refreshBtn" class="refresh-btn">Refresh Prices</button>
+        <span id="lastUpdated" class="last-updated"></span>
+        <label class="auto-refresh">
+          <input type="checkbox" id="autoRefresh">
+          Auto-refresh (1 min)
+        </label>
+      </div>
+    </header>
+
+    <main id="portfolios" class="portfolios">
+      <!-- Portfolios will be rendered here -->
+    </main>
+  </div>
+
+  <script src="holdings.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
