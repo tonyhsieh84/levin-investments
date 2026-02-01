@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Levin's Portfolio</title>
+    <title>Levin Hsieh's Portfolio</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏀</text></svg>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -98,6 +98,21 @@
             margin-bottom: 16px;
             padding-bottom: 16px;
             border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .section-toggle {
+            font-size: 11px;
+            color: #666;
+            text-decoration: none;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .section-toggle:hover {
+            color: #111;
         }
 
         .holdings {
@@ -153,6 +168,76 @@
         }
 
         .stock-change.negative {
+            color: #dc2626;
+        }
+
+        /* Transaction History */
+        .history {
+            margin-bottom: 48px;
+            display: none;
+        }
+
+        .history.visible {
+            display: block;
+        }
+
+        .history-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+        }
+
+        .history-table th,
+        .history-table td {
+            padding: 12px 8px;
+            text-align: left;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .history-table th {
+            font-size: 10px;
+            font-weight: 500;
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .history-table td.num {
+            text-align: right;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .history-table th.num {
+            text-align: right;
+        }
+
+        .history-table tbody tr:hover {
+            background-color: #f5f5f5;
+        }
+
+        .history-table tfoot {
+            border-top: 2px solid #e0e0e0;
+        }
+
+        .history-table tfoot td {
+            font-weight: 500;
+            padding-top: 16px;
+        }
+
+        .history-total {
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid #e0e0e0;
+            font-size: 13px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .positive {
+            color: #0a8754;
+        }
+
+        .negative {
             color: #dc2626;
         }
 
@@ -270,6 +355,15 @@
             .auto-refresh {
                 justify-content: center;
             }
+
+            .history-table {
+                font-size: 11px;
+            }
+
+            .history-table th,
+            .history-table td {
+                padding: 10px 4px;
+            }
         }
     </style>
 </head>
@@ -277,7 +371,7 @@
     <div class="container">
         <header>
             <div class="label">Investment Portfolio</div>
-            <h1>Levin</h1>
+            <h1>Levin Hsieh</h1>
         </header>
 
         <div id="content">
@@ -306,10 +400,33 @@
             { symbol: 'PDD', shares: 1, costBasis: 129.47 }
         ];
 
+        // Transaction history
+        const TRANSACTIONS = [
+            { date: "2024-11-01", symbol: "QQQ", rmb: 400, usd: 56.48, price: 487.43, shares: 0.1159, note: "Allowance" },
+            { date: "2025-01-02", symbol: "QQQ", rmb: 300, usd: 41.21, price: 510.23, shares: 0.0808, note: "Allowance" },
+            { date: "2025-01-02", symbol: "QQQ", rmb: 6000, usd: 824.26, price: 510.23, shares: 1.6155, note: "Red Pocket" },
+            { date: "2025-02-03", symbol: "QQQ", rmb: 2940, usd: 402.68, price: 518.11, shares: 0.7772, note: "Allowance" },
+            { date: "2025-03-03", symbol: "QQQ", rmb: 170, usd: 23.39, price: 497.05, shares: 0.0471, note: "Allowance" },
+            { date: "2025-04-01", symbol: "QQQ", rmb: 170, usd: 23.44, price: 472.70, shares: 0.0496, note: "Allowance" },
+            { date: "2025-05-01", symbol: "QQQ", rmb: 400, usd: 54.86, price: 481.68, shares: 0.1139, note: "Allowance" },
+            { date: "2025-06-02", symbol: "QQQ", rmb: 130, usd: 18.01, price: 523.21, shares: 0.0344, note: "Allowance" },
+            { date: "2025-07-01", symbol: "QQQ", rmb: 100, usd: 13.92, price: 546.99, shares: 0.0255, note: "Allowance" },
+            { date: "2025-08-01", symbol: "QQQ", rmb: 900, usd: 125.49, price: 553.88, shares: 0.2266, note: "Allowance" },
+            { date: "2025-08-11", symbol: "NVDA", rmb: 0, usd: 182.06, price: 182.06, shares: 1, note: "Stock Purchase" },
+            { date: "2025-09-02", symbol: "QQQ", rmb: 300, usd: 41.81, price: 565.62, shares: 0.0739, note: "Allowance" },
+            { date: "2025-09-19", symbol: "PDD", rmb: 0, usd: 129.47, price: 129.47, shares: 1, note: "Stock Purchase" },
+            { date: "2025-10-01", symbol: "QQQ", rmb: 100, usd: 14.03, price: 603.25, shares: 0.0233, note: "Allowance" },
+            { date: "2025-11-03", symbol: "QQQ", rmb: 300, usd: 42.13, price: 632.08, shares: 0.0667, note: "Allowance" },
+            { date: "2025-12-01", symbol: "QQQ", rmb: 300, usd: 42.23, price: 617.17, shares: 0.0684, note: "Allowance" },
+            { date: "2026-01-02", symbol: "QQQ", rmb: 200, usd: 28.38, price: 613.12, shares: 0.0463, note: "Allowance" }
+        ];
+
         // Tencent Finance API (works in China without VPN)
         const TENCENT_API = 'https://qt.gtimg.cn/q=';
 
         let autoRefreshInterval = null;
+        let historyVisible = false;
+        let currentPrices = {};
 
         // Format currency
         function formatCurrency(value) {
@@ -332,6 +449,12 @@
             return sign + value.toFixed(2) + '%';
         }
 
+        // Format date
+        function formatDate(dateStr) {
+            const date = new Date(dateStr);
+            return date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+        }
+
         // Fetch stock price from Tencent Finance API
         async function fetchStockPrice(symbol) {
             try {
@@ -339,7 +462,6 @@
                 const response = await fetch(`${TENCENT_API}${tencentSymbol}`);
                 const text = await response.text();
 
-                // Parse Tencent response: v_usQQQ="1~QQQ~name~price~prevClose~..."
                 const match = text.match(/="([^"]+)"/);
                 if (match) {
                     const fields = match[1].split('~');
@@ -384,6 +506,7 @@
                 const stockData = await Promise.all(
                     PORTFOLIO.map(async (holding) => {
                         const data = await fetchStockPrice(holding.symbol);
+                        currentPrices[holding.symbol] = data.price;
                         const totalValue = data.price ? data.price * holding.shares : null;
                         const totalCost = holding.costBasis * holding.shares;
                         const gainLoss = totalValue ? totalValue - totalCost : null;
@@ -413,6 +536,74 @@
                 refreshBtn.disabled = false;
                 refreshBtn.textContent = 'Refresh';
             }
+        }
+
+        // Toggle history visibility
+        function toggleHistory() {
+            historyVisible = !historyVisible;
+            const historySection = document.getElementById('history-section');
+            const toggleLink = document.getElementById('history-toggle');
+            if (historySection) {
+                historySection.classList.toggle('visible', historyVisible);
+                toggleLink.textContent = historyVisible ? 'Hide History' : 'View History';
+            }
+        }
+
+        // Render transaction history
+        function renderHistory() {
+            const totalRmb = TRANSACTIONS.reduce((sum, tx) => sum + tx.rmb, 0);
+            const totalUsd = TRANSACTIONS.reduce((sum, tx) => sum + tx.usd, 0);
+            const totalShares = TRANSACTIONS.reduce((sum, tx) => sum + tx.shares, 0);
+
+            const rows = TRANSACTIONS.map(tx => {
+                const currentPrice = currentPrices[tx.symbol];
+                const currentValue = currentPrice ? tx.shares * currentPrice : null;
+                const gainLoss = currentValue ? currentValue - tx.usd : null;
+                const changeClass = gainLoss === null ? '' : (gainLoss >= 0 ? 'positive' : 'negative');
+
+                return `
+                    <tr>
+                        <td>${formatDate(tx.date)}</td>
+                        <td><strong>${tx.symbol}</strong></td>
+                        <td>${tx.note}</td>
+                        <td class="num">${tx.rmb > 0 ? '¥' + tx.rmb.toLocaleString() : '—'}</td>
+                        <td class="num">${formatCurrency(tx.usd)}</td>
+                        <td class="num">${tx.shares.toFixed(4)}</td>
+                        <td class="num ${changeClass}">${gainLoss !== null ? formatChange(gainLoss) : '—'}</td>
+                    </tr>
+                `;
+            }).join('');
+
+            return `
+                <div id="history-section" class="history ${historyVisible ? 'visible' : ''}">
+                    <div class="section-header">Transaction History</div>
+                    <table class="history-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Symbol</th>
+                                <th>Note</th>
+                                <th class="num">RMB</th>
+                                <th class="num">Cost</th>
+                                <th class="num">Shares</th>
+                                <th class="num">Gain/Loss</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${rows}
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="3"><strong>Total</strong></td>
+                                <td class="num"><strong>¥${totalRmb.toLocaleString()}</strong></td>
+                                <td class="num"><strong>${formatCurrency(totalUsd)}</strong></td>
+                                <td class="num"><strong>${totalShares.toFixed(4)}</strong></td>
+                                <td></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            `;
         }
 
         // Render the portfolio
@@ -469,9 +660,14 @@
                 </div>
 
                 <div class="holdings">
-                    <div class="section-header">Holdings</div>
+                    <div class="section-header">
+                        <span>Holdings</span>
+                        <a id="history-toggle" class="section-toggle" onclick="toggleHistory()">View History</a>
+                    </div>
                     ${holdingsHTML}
                 </div>
+
+                ${renderHistory()}
             `;
         }
 
@@ -487,7 +683,6 @@
                 }
             });
 
-            // Start auto-refresh by default
             autoRefreshInterval = setInterval(fetchPrices, 60000);
         }
 
