@@ -4,7 +4,9 @@
 const holdings = {
   "Levin": {
     holdings: [
-      { symbol: "QQQ", shares: 3.3648, costBasis: 520.77 }
+      { symbol: "QQQ", shares: 3.3648, costBasis: 520.77 },
+      { symbol: "NVDA", shares: 1, costBasis: 182.06 },
+      { symbol: "PDD", shares: 1, costBasis: 129.47 }
     ],
     transactions: [
       { date: "2024-11-01", symbol: "QQQ", rmb: 400, usd: 56.48, price: 487.43, shares: 0.1159, note: "Allowance" },
@@ -17,7 +19,9 @@ const holdings = {
       { date: "2025-06-02", symbol: "QQQ", rmb: 130, usd: 18.01, price: 523.21, shares: 0.0344, note: "Allowance" },
       { date: "2025-07-01", symbol: "QQQ", rmb: 100, usd: 13.92, price: 546.99, shares: 0.0255, note: "Allowance" },
       { date: "2025-08-01", symbol: "QQQ", rmb: 900, usd: 125.49, price: 553.88, shares: 0.2266, note: "Allowance" },
+      { date: "2025-08-11", symbol: "NVDA", rmb: 0, usd: 182.06, price: 182.06, shares: 1, note: "Stock Purchase" },
       { date: "2025-09-02", symbol: "QQQ", rmb: 300, usd: 41.81, price: 565.62, shares: 0.0739, note: "Allowance" },
+      { date: "2025-09-19", symbol: "PDD", rmb: 0, usd: 129.47, price: 129.47, shares: 1, note: "Stock Purchase" },
       { date: "2025-10-01", symbol: "QQQ", rmb: 100, usd: 14.03, price: 603.25, shares: 0.0233, note: "Allowance" },
       { date: "2025-11-03", symbol: "QQQ", rmb: 300, usd: 42.13, price: 632.08, shares: 0.0667, note: "Allowance" },
       { date: "2025-12-01", symbol: "QQQ", rmb: 300, usd: 42.23, price: 617.17, shares: 0.0684, note: "Allowance" },
