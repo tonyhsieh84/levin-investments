@@ -396,7 +396,8 @@
         // Levin's Portfolio - edit holdings here
         const PORTFOLIO = [
             { symbol: 'QQQ', shares: 5.8415, costBasis: 565.16 },
-            { symbol: 'TSM', shares: 1, costBasis: 364.20 }
+            { symbol: 'TSM', shares: 1, costBasis: 364.20 },
+            { symbol: 'TSLA', shares: 1, costBasis: 391.20 }
         ];
 
         // Transaction history
@@ -446,6 +447,7 @@
 
         // Format percentage
         function formatPercent(value) {
+            if (value === null || value === undefined) return '—';
             const sign = value >= 0 ? '+' : '';
             return sign + value.toFixed(2) + '%';
         }
@@ -514,7 +516,7 @@
                 const stockData = PORTFOLIO.map(holding => {
                     const data = priceData[holding.symbol];
                     currentPrices[holding.symbol] = data.price;
-                    const totalValue = data.price ? data.price * holding.shares : null;
+                    const totalValue = data.price !== null ? data.price * holding.shares : null;
                     const totalCost = holding.costBasis * holding.shares;
                     const gainLoss = totalValue !== null ? totalValue - totalCost : null;
                     const gainLossPercent = gainLoss !== null ? (gainLoss / totalCost) * 100 : null;
